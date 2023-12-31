@@ -1,4 +1,4 @@
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Tuple
 import os
 
 import cv2
@@ -35,12 +35,22 @@ def get_yolo():
     return net, classes, layer_names
 
 
+def get_percent(count: int, value: int) -> float:
+    return round((value * 100) / count, 1)
+
+
+def normalize_values(res: Dict, count: int) -> Dict:
+    return {key: get_percent(count=count, value=value) for key, value in res.items()}
+
+
 def process(
     cap: cv2.VideoCapture, net: Any, classes: List[str], layer_names: Any
-) -> Dict:
+) -> Tuple[Dict, List[str]]:
     frame_skip = cap.get(cv2.CAP_PROP_FPS)
     current_frame = 0
 
+    count = 0
+    res_list = []
     response = {}
     while cap.isOpened():
         cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
@@ -66,15 +76,18 @@ def process(
                 if conf >= CONFIDENCE:
                     if label not in response:
                         response[label] = 1
+                        res_list.append(label)
+                        count = count + 1
                     else:
                         response[label] += 1
+                        count = count + 1
 
         current_frame += frame_skip
 
     cap.release()
     cv2.destroyAllWindows()
 
-    return response
+    return normalize_values(res=response, count=count), res_list
 
 
 def get_video_and_download(event: Dict) -> str:
@@ -138,13 +151,16 @@ def main(event, context) -> None:
     else:
         net, classes, layer_names = get_yolo()
         miniature_file = get_and_save_initial_image(cap=video, event=event)
-        labels = process(cap=video, net=net, classes=classes, layer_names=layer_names)
+        labels, labels_list = process(
+            cap=video, net=net, classes=classes, layer_names=layer_names
+        )
         res = build_public_urls_information(
             event=event, miniature_filename=miniature_file
         )
 
         file = str(event["name"])
         res["labels"] = labels
+        res["labels_arr"] = labels_list
         res["title"] = file.split(".")[0].replace("_", " ").title()
 
         persist_document_in_db(doc=res)

@@ -44,17 +44,10 @@ class GoogleFirestoreQueryService:
     def query(self, query: str = None) -> List[Dict]:
         if not query:
             return [doc.to_dict() for doc in self.collection.get()]
-        print("QUERY", query)
         match_keys = [key for key in query.lower().split("%") if key in self.coco_names]
-        print("KEYS", match_keys)
         return [
             doc.to_dict()
             for doc in self.collection.where(
-                filter=FieldFilter("labels.book", ">=", 1)
+                filter=FieldFilter("labels_arr", "array_contains_any", match_keys)
             ).stream()
         ]
-
-    # TODO generate nested query must be fixed
-    @staticmethod
-    def generate_filter_constraint(keys: List[str]) -> Any:
-        return And(filters=[FieldFilter(f"labels.{key}", ">=", 1) for key in keys])
