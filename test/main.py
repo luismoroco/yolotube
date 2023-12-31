@@ -139,7 +139,7 @@ def get_and_save_initial_image(cap: cv2.VideoCapture) -> None:
     if not ret:
         return
 
-    local_file_image_initial_path = "frame1.jpg"
+    local_file_image_initial_path = "out/frame.jpg"
     cv2.imwrite(local_file_image_initial_path, frame)
 
 
