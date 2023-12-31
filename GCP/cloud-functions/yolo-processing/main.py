@@ -143,7 +143,7 @@ def main(event, context) -> None:
 
         file = str(event["name"])
         res["labels"] = labels
-        res["title"] = file.replace("_", " ").title()
+        res["title"] = file.split(".")[0].replace("_", " ").title()
 
         persist_document_in_db(doc=res)
         print("OK", res)
