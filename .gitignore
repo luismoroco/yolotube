@@ -2,3 +2,7 @@
 /venv
 *.json
 /yolotube/server/.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

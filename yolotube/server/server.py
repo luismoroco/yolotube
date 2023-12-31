@@ -28,7 +28,7 @@ os.environ[
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", message="Bienvenido")
 
 
 @app.route("/upload", methods=["POST"])
@@ -37,6 +37,6 @@ def upload_file_to_bucket():
 
     try:
         GoogleStorageLoaderService().load(file=file)
-        return jsonify({"message": "OK"}), 200
+        return render_template("index.html", message="¡Video Guardado en Bucket!")
     except Exception as e:
         return render_template("error.html", error=e), 500
