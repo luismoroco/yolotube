@@ -144,7 +144,7 @@ def get_and_save_initial_image(cap: cv2.VideoCapture) -> None:
 
 
 if __name__ == "__main__":
-    iFile = cv2.VideoCapture("../data/video/NY-lite.mp4")
+    iFile = cv2.VideoCapture("../data/video/The_Office_Jim_Asiatico.mp4")
 
     if not iFile.isOpened():
         sys.exit()
