@@ -89,7 +89,7 @@ classNames = [
     "toothbrush",
 ]
 
-res = []
+res = {}
 
 
 def main(cap: cv2.VideoCapture) -> None:
@@ -117,8 +117,11 @@ def main(cap: cv2.VideoCapture) -> None:
                 cls = box.cls[0]
                 name = classNames[int(cls)]
 
-                if name not in res and conf >= 0.5:
-                    res.append(name)
+                if conf >= 0.5:
+                    if name not in res:
+                        res[name] = 1
+                    else:
+                        res[name] += 1
 
         cv2.imshow("Frame", frame)
 
@@ -131,11 +134,21 @@ def main(cap: cv2.VideoCapture) -> None:
     cv2.destroyAllWindows()
 
 
+def get_and_save_initial_image(cap: cv2.VideoCapture) -> None:
+    ret, frame = cap.read()
+    if not ret:
+        return
+
+    local_file_image_initial_path = "frame1.jpg"
+    cv2.imwrite(local_file_image_initial_path, frame)
+
+
 if __name__ == "__main__":
-    iFile = cv2.VideoCapture("../data/video/TheOffice.mp4")
+    iFile = cv2.VideoCapture("../data/video/NY-lite.mp4")
 
     if not iFile.isOpened():
         sys.exit()
 
+    get_and_save_initial_image(iFile)
     main(iFile)
     print("Response: ", res)
