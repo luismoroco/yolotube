@@ -4,7 +4,7 @@ import sys
 from flask import Flask, request, render_template, jsonify
 from dotenv import load_dotenv
 
-from service import GoogleStorageLoaderService
+from service import GoogleStorageLoaderService, GoogleFirestoreQueryService
 
 
 load_dotenv()
@@ -25,6 +25,8 @@ os.environ[
     "GOOGLE_APPLICATION_CREDENTIALS"
 ] = f"{GCP_CREDENTIAL_PATH}/{GCP_CREDENTIAL_FILENAME}"
 
+query_eng = GoogleFirestoreQueryService()
+
 
 @app.route("/")
 def index():
@@ -40,3 +42,14 @@ def upload_file_to_bucket():
         return render_template("index.html", message="¡Video Guardado en Bucket!"), 200
     except Exception as e:
         return render_template("error.html", error=e), 500
+
+
+@app.route("/data/", methods=["GET"])
+def list_items():
+    query = request.args.get("query", None)
+
+    try:
+        data = query_eng.query(query=query)
+        return jsonify({"message": "OK", "data": data}), 200
+    except Exception as e:
+        return jsonify({"message": e, "data": []}), 500
