@@ -1,3 +1,4 @@
 *.mp4
 /venv
 *.json
+/yolotube/server/.env

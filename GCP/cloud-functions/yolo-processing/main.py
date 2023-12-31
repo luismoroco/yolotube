@@ -123,7 +123,9 @@ def build_public_urls_information(event: Dict, miniature_filename: str) -> Dict:
 
 
 def persist_document_in_db(doc: Dict) -> None:
-    firestore_client = firestore.Client(project=GCP_PROJECT_ID, database=FIRESTORE_DATABASE_NAME)
+    firestore_client = firestore.Client(
+        project=GCP_PROJECT_ID, database=FIRESTORE_DATABASE_NAME
+    )
     firestore_client.collection(FIRESTORE_COLLECTION_NAME).add(doc)
 
 
