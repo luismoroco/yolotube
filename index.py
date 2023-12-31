@@ -1,16 +1,5 @@
-import shutil
+title = "The_office_cap_4"
 
-NAME = "tmp"
+x = title.replace("_", " ").title()
 
-x = {
-    "y": 5,
-}
-
-y = {
-    "fd": 567,
-}
-
-x.update(y)
-
-
-print("RES", x)
+print(x)

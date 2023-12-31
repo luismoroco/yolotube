@@ -3,7 +3,7 @@ import os
 
 import cv2
 import numpy as np
-from google.cloud import storage
+from google.cloud import storage, firestore
 import secrets
 
 
@@ -15,6 +15,9 @@ BUCKET_VIDEO_MINIATURE = "serverless-video-miniature"
 TEMP_DIRECTORY = "tmp"
 HEX_SECRETES_SIZE = 4
 BASE_BUCKET_URL = "https://storage.cloud.google.com"
+FIRESTORE_DATABASE_NAME = "yolotube"
+FIRESTORE_COLLECTION_NAME = "yolotube-test"
+GCP_PROJECT_ID = "serverless-408914"
 
 
 def get_hex_token() -> str:
@@ -119,6 +122,11 @@ def build_public_urls_information(event: Dict, miniature_filename: str) -> Dict:
     }
 
 
+def persist_document_in_db(doc: Dict) -> None:
+    firestore_client = firestore.Client(project=GCP_PROJECT_ID, database=FIRESTORE_DATABASE_NAME)
+    firestore_client.collection(FIRESTORE_COLLECTION_NAME).add(doc)
+
+
 def main(event, context) -> None:
     path = get_video_and_download(event=event)
 
@@ -132,8 +140,12 @@ def main(event, context) -> None:
         res = build_public_urls_information(
             event=event, miniature_filename=miniature_file
         )
-        res.update(labels)
 
+        file = str(event["name"])
+        res["labels"] = labels
+        res["title"] = file.replace("_", " ").title()
+
+        persist_document_in_db(doc=res)
         print("OK", res)
 
     os.remove(path)
