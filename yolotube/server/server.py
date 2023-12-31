@@ -37,6 +37,6 @@ def upload_file_to_bucket():
 
     try:
         GoogleStorageLoaderService().load(file=file)
-        return render_template("index.html", message="¡Video Guardado en Bucket!")
+        return render_template("index.html", message="¡Video Guardado en Bucket!"), 200
     except Exception as e:
         return render_template("error.html", error=e), 500
