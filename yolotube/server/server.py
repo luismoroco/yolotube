@@ -3,6 +3,7 @@ import sys
 
 from flask import Flask, request, render_template, jsonify
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 from service import GoogleStorageLoaderService, GoogleFirestoreQueryService
 
@@ -14,6 +15,7 @@ __all__ = ["app"]
 
 
 app = Flask(__name__)
+CORS(app)
 
 GCP_CREDENTIAL_PATH = os.getenv("GCP_CREDENTIAL_PATH")
 GCP_CREDENTIAL_FILENAME = os.getenv("GCP_CREDENTIAL_FILENAME")

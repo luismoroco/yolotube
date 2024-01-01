@@ -42,12 +42,20 @@ class GoogleFirestoreQueryService:
             self.coco_names = [line.strip() for line in f.readlines()]
 
     def query(self, query: str = None) -> List[Dict]:
-        if not query:
-            return [doc.to_dict() for doc in self.collection.get()]
-        match_keys = [key for key in query.lower().split("%") if key in self.coco_names]
-        return [
-            doc.to_dict()
-            for doc in self.collection.where(
+        try:
+            if not query:
+                # Si la query está vacía, devolver todos los documentos
+                return [doc.to_dict() for doc in self.collection.get()]
+
+            match_keys = [key for key in query.lower().split("%") if key in self.coco_names]
+            query_result = self.collection.where(
                 filter=FieldFilter("labels_arr", "array_contains_any", match_keys)
             ).stream()
-        ]
+
+            # Convertir los documentos a un formato de diccionario
+            return [doc.to_dict() for doc in query_result]
+
+        except Exception as e:
+            # Manejar la excepción (puedes personalizar según tus necesidades)
+            print(f"Error al realizar la consulta: {e}")
+            return [doc.to_dict() for doc in self.collection.get()]
