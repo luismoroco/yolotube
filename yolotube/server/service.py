@@ -47,7 +47,9 @@ class GoogleFirestoreQueryService:
                 # Si la query está vacía, devolver todos los documentos
                 return [doc.to_dict() for doc in self.collection.get()]
 
-            match_keys = [key for key in query.lower().split("%") if key in self.coco_names]
+            match_keys = [
+                key for key in query.lower().split("%") if key in self.coco_names
+            ]
             query_result = self.collection.where(
                 filter=FieldFilter("labels_arr", "array_contains_any", match_keys)
             ).stream()

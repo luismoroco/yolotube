@@ -96,6 +96,7 @@ def main(cap: cv2.VideoCapture) -> None:
     frame_skip = cap.get(cv2.CAP_PROP_FPS)
     current_frame = 0
 
+    duration = 0
     while cap.isOpened():
         cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
 
@@ -129,9 +130,12 @@ def main(cap: cv2.VideoCapture) -> None:
             break
 
         current_frame += frame_skip
+        duration += 1
 
     cap.release()
     cv2.destroyAllWindows()
+
+    print("Duration:", duration - 1)
 
 
 def get_and_save_initial_image(cap: cv2.VideoCapture) -> None:
@@ -144,7 +148,7 @@ def get_and_save_initial_image(cap: cv2.VideoCapture) -> None:
 
 
 if __name__ == "__main__":
-    iFile = cv2.VideoCapture("../data/video/The_Office_Jim_Asiatico.mp4")
+    iFile = cv2.VideoCapture("../data/video/NY_lite.mp4")
 
     if not iFile.isOpened():
         sys.exit()

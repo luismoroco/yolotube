@@ -45,13 +45,14 @@ def normalize_values(res: Dict, count: int) -> Dict:
 
 def process(
     cap: cv2.VideoCapture, net: Any, classes: List[str], layer_names: Any
-) -> Tuple[Dict, List[str]]:
+) -> Tuple[Dict, List[str], int]:
     frame_skip = cap.get(cv2.CAP_PROP_FPS)
     current_frame = 0
 
     count = 0
     res_list = []
     response = {}
+    duration = 1
     while cap.isOpened():
         cap.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
 
@@ -83,11 +84,12 @@ def process(
                         count = count + 1
 
         current_frame += frame_skip
+        duration += 1
 
     cap.release()
     cv2.destroyAllWindows()
 
-    return normalize_values(res=response, count=count), res_list
+    return normalize_values(res=response, count=count), res_list, duration - 1
 
 
 def get_video_and_download(event: Dict) -> str:
@@ -151,7 +153,7 @@ def main(event, context) -> None:
     else:
         net, classes, layer_names = get_yolo()
         miniature_file = get_and_save_initial_image(cap=video, event=event)
-        labels, labels_list = process(
+        labels, labels_list, duration = process(
             cap=video, net=net, classes=classes, layer_names=layer_names
         )
         res = build_public_urls_information(
@@ -162,6 +164,7 @@ def main(event, context) -> None:
         res["labels"] = labels
         res["labels_arr"] = labels_list
         res["title"] = file.split(".")[0].replace("_", " ").title()
+        res["duration"] = duration
 
         persist_document_in_db(doc=res)
         print("OK", res)
