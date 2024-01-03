@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import VideoList from './components/VideoList';
+import VideoList from './components/VideoCards/VideoList';
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import VideoPlayer from './components/VideoPlayer';
+import VideoPlayer from './components/VideoCards/VideoPlayer';
 
 
 function App() {

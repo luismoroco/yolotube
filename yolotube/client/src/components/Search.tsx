@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface SearchProps {
   onSearch: (query: string) => void;
@@ -7,14 +8,20 @@ interface SearchProps {
 
 const Search: React.FC<SearchProps> = ({ onSearch })  => {
   const [searchQuery, setSearchQuery] = useState('');
-  
+  const [searched, setSearched] = useState(false);
+
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
+    setSearched(false);
   };
 
   const handleSearch = () => {
-    // window.location.href = `/data?query=${encodeURIComponent(searchQuery)}`;
     onSearch(searchQuery);
+    setSearched(true);
   };
 
   const handleKeyDown = (e: any) => {
@@ -22,6 +29,13 @@ const Search: React.FC<SearchProps> = ({ onSearch })  => {
       handleSearch();
     }
   };
+
+  useEffect(() => {
+    if (searched && location.pathname !== '/') {
+      setSearched(false);
+      navigate('/');
+    }
+  }, [location.pathname, navigate, searched, setSearched]);
 
   return (
     <div className="search">

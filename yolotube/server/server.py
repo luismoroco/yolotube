@@ -14,7 +14,7 @@ load_dotenv()
 __all__ = ["app"]
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 CORS(app)
 
 GCP_CREDENTIAL_PATH = os.getenv("GCP_CREDENTIAL_PATH")
@@ -32,13 +32,13 @@ query_eng = GoogleFirestoreQueryService()
 
 @app.route("/")
 def index():
-    return render_template("index.html", message="Bienvenido")
+    return render_template("index.html", message="Sube tu video aquí")
 
 
 @app.route("/upload", methods=["POST"])
 def upload_file_to_bucket():
     file = request.files["archivo"]
-
+    print(file)
     try:
         GoogleStorageLoaderService().load(file=file)
         return render_template("index.html", message="¡Video Guardado en Bucket!"), 200

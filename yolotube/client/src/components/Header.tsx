@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaBars } from 'react-icons/fa';
 import Search from "./Search";
+import yolotube from '../assets/yolotube.png';
 
 interface HeaderProps {
   onSidebarToggle: () => void;
@@ -26,7 +27,7 @@ const Header: React.FC<HeaderProps> = ({onSearch, onSidebarToggle}) => {
       </div>
 
       <div className="header__logo" onClick={handleReturnHome}>
-          <img src="src/assets/yolotube.png" alt="YouTube Logo" />
+          <img src={yolotube} alt="YouTube Logo" />
           <span className="header__text">YoloTube</span>
       </div>
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import VideoCard from './VideoCard';
 import axios from 'axios';
 import LoadingSpinner from './LoadingSpinner';
+import "./css/Video.css";
 
 interface VideoListProps {
   searchQuery: string;
@@ -17,7 +18,7 @@ const VideoList: React.FC<VideoListProps> = ({ searchQuery })  => {
         console.log("ESTA ES LA BUSQUEDA AHORITA: /" + searchQuery + '/');
         setLoading(true);
         const encodedQuery = encodeURIComponent(searchQuery);
-        const response = await axios.get("http://192.168.0.5:5000/data/", {
+        const response = await axios.get("http://192.168.0.5:8080/data/", {
             params: { query: encodedQuery },
         });
         // const apiUrl = `http://127.0.0.1:8080/data/?query=${encodedQuery}`;
@@ -42,7 +43,7 @@ const VideoList: React.FC<VideoListProps> = ({ searchQuery })  => {
         videos.map((video) => (
           <VideoCard
             key={video.title}
-            duration={'3:22'}
+            duration={video.duration}
             imageUrl={video.video_miniature_public_url}
             videoUrl={video.video_public_url}
             title={video.title}
