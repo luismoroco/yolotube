@@ -3,45 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yolotube Uploader</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css"></link>
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/index.css') }}">
+    <title>YOLOTUBE Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #dashboard {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2e6c29;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        input[type="submit"] {
+            background-color: #3f8f33;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #347932;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="wrapper">
-        <div class="logo">
-            <img src="{{ url_for('static', filename='yolotube.png') }}" />
-        </div>
-        <h1>Yolotube Uploader 
-            <small> {{ message }} </small>
-        </h1>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <div class="avatar-upload">
-                <div class="avatar-edit">
-                    <input type='file' id="videoUpload" accept=".mp4, .mkv" />
-                    <label for="videoUpload"></label>
-                </div>
-                <div class="avatar-preview">
-                    <div id="videoPreview" style="background-image: url(https://d500.epimg.net/cincodias/imagenes/2019/04/15/lifestyle/1555337026_160009_1555337208_noticia_normal.jpg);">
-                    </div>
-                </div>
-            </div>
-
-            <div class="submitButton">
-                <input type="submit" id="file" />
-                <label for="file" class="btn-1">Subir Video</label>  
-            </div>
-            
-        </form>
-        <br/>
-        
-        </div>
-    </div>
-    
-    <script src="{{ url_for('static', filename='assets/index.js') }}"></script>
+<div id="dashboard">
+    <h1>YOLOTUBE</h1>
+    <p> {{ message }} </p>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="archivo" required>
+        <input type="submit" value="Subir Archivo">
+    </form>
+</div>
 </body>
 </html>

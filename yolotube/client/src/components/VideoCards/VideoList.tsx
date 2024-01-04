@@ -18,11 +18,10 @@ const VideoList: React.FC<VideoListProps> = ({ searchQuery })  => {
         console.log("ESTA ES LA BUSQUEDA AHORITA: /" + searchQuery + '/');
         setLoading(true);
         const encodedQuery = encodeURIComponent(searchQuery);
-        const response = await axios.get("http://192.168.0.5:8080/data/", {
+        const response = await axios.get("http://192.168.0.5:5000/data/", {
             params: { query: encodedQuery },
         });
-        // const apiUrl = `http://127.0.0.1:8080/data/?query=${encodedQuery}`;
-        // const response = await axios.get(apiUrl);
+
         setVideos(response.data.data);
         console.log(response.data)
       } catch (error) {

@@ -21,11 +21,16 @@ const VideoPlayer: React.FC = () => {
         }
       }
 
+      const entries = Object.entries(labelMap);
+      entries.sort((a, b) => b[1] - a[1]);
+      const sortedLabelMap = Object.fromEntries(entries);
+      console.log(sortedLabelMap);
+
     const sliderSettings = {
         useCSS: true,
         infinite: false,
         slidesToShow: 4,
-        slidesToScroll: 1,
+        slidesToScroll: 3,
         speed: 1000
     };
 
@@ -45,7 +50,7 @@ const VideoPlayer: React.FC = () => {
                 </div>
                 <div className='videoPlayer_tags'>
                     <Slider {...sliderSettings}>
-                        {Object.entries(labelMap).map(([key, value]) => (
+                        {Object.entries(sortedLabelMap).map(([key, value]) => (
                         <LabelCard 
                             key={key}
                             count={value}

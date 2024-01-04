@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yolotube Uploader</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Rubik' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css"></link>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/index.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="wrapper">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='yolotube.png') }}" />
+        </div>
+        <h1>Yolotube Uploader 
+            <small> {{ message }} </small>
+        </h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="avatar-upload">
+                <div class="avatar-edit">
+                    <input type='file' id="videoUpload" accept=".mp4, .mkv" />
+                    <label for="videoUpload"></label>
+                </div>
+                <div class="avatar-preview">
+                    <div id="videoPreview" style="background-image: url(https://d500.epimg.net/cincodias/imagenes/2019/04/15/lifestyle/1555337026_160009_1555337208_noticia_normal.jpg);">
+                    </div>
+                </div>
+            </div>
+
+            <div class="submitButton">
+                <input type="submit" id="file" />
+                <label for="file" class="btn-1">Subir Video</label>  
+            </div>
+            
+        </form>
+        <br/>
+        
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='assets/index.js') }}"></script>
+</body>
+</html>
