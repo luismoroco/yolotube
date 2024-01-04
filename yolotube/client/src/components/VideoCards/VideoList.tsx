@@ -18,7 +18,7 @@ const VideoList: React.FC<VideoListProps> = ({ searchQuery })  => {
         console.log("ESTA ES LA BUSQUEDA AHORITA: /" + searchQuery + '/');
         setLoading(true);
         const encodedQuery = encodeURIComponent(searchQuery);
-        const response = await axios.get("http://192.168.0.5:5000/data/", {
+        const response = await axios.get("http://0.0.0.0:5000/data/", {
             params: { query: encodedQuery },
         });
 
