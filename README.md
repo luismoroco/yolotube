@@ -16,3 +16,9 @@ and another the change is not very significant.
 ## 2. Architecture
 
 ![Design](yolotube.png)
+
+## 3. Fronted
+
+![Main](main-page-yolotube.png)
+
+![Video view](video-page-yolotube.png)
